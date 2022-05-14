@@ -46,7 +46,7 @@ def CreatePlayer():
             "Name": name,
             "HP": {"HP": 25, "HPMax": 25},
             "Dmg": 2,
-            "Level": {"Exp": 0, "ExpMax": 0, "Level": 1},
+            "Level": {"Exp": 0, "ExpMax": 10, "Level": 1},
             "Outfit": {"Weapon": None, "Head": None, "Torso": None, "Legs": None},
             "Inventory": {"Inventory": [], "Capacity":  5},
             "Money": {"Coins": 0, "Diamonds": 0}

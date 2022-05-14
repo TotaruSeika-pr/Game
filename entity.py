@@ -14,17 +14,17 @@ enemies = {
           }
 
 WEAPONS = [
-            {"Type": "weapon", "Name": "Stick", "Dmg": 2, "Rarity": "Common", "Price": [12, 30]},
-            {"Type": "weapon", "Name": "Rusty knife", "Dmg": 4, "Rarity": "Common", "Price": [15, 32]},
-            {"Type": "weapon", "Name": "Wooden spear", "Dmg": 5, "Rarity": "Common", "Price": [18, 38]},
-            {"Type": "weapon", "Name": "Dagger", "Dmg": 7, "Rarity": "Unusual", "Price": [20, 40]},
-            {"Type": "weapon", "Name": "Iron sword", "Dmg": 10, "Rarity": "Unusual", "Price": [25, 42]},
-            {"Type": "weapon", "Name": "Katana", "Dmg": 13, "Rarity": "Rare", "Price": [40, 100]},
-            {"Type": "weapon", "Name": "Battle Ax", "Dmg": 17, "Rarity": "Rare", "Price": [38, 90]}
+            {"Type": "weapon", "Name": "Stick", "Dmg": 2, "Rarity": "Common", "Price": 35},
+            {"Type": "weapon", "Name": "Rusty knife", "Dmg": 4, "Rarity": "Common", "Price": 40},
+            {"Type": "weapon", "Name": "Wooden spear", "Dmg": 5, "Rarity": "Common", "Price": 50},
+            {"Type": "weapon", "Name": "Dagger", "Dmg": 7, "Rarity": "Unusual", "Price": 65},
+            {"Type": "weapon", "Name": "Iron sword", "Dmg": 10, "Rarity": "Unusual", "Price": 70},
+            {"Type": "weapon", "Name": "Katana", "Dmg": 13, "Rarity": "Rare", "Price": 80},
+            {"Type": "weapon", "Name": "Battle Ax", "Dmg": 17, "Rarity": "Rare", "Price": 90}
           ]
 
 potions = {
-            "1" : {"Type": "potion", "Name": "Lesser Healing Potion", "Assistance type": "HP", "Benefit": 0.25, "Price": [40, 40]},
-            "2": {"Type": "potion", "Name": "Medium Healing Potion", "Assistance type": "HP", "Benefit": 0.5, "Price": [65, 65]},
-            "3": {"Type": "potion", "Name": "Major Healing Potion", "Assistance type": "HP", "Benefit": 1, "Price": [90, 90]}
+            "1" : {"Type": "potion", "Name": "Lesser Healing Potion", "Assistance type": "HP", "Benefit": 0.25, "Price": 40},
+            "2": {"Type": "potion", "Name": "Medium Healing Potion", "Assistance type": "HP", "Benefit": 0.5, "Price": 65},
+            "3": {"Type": "potion", "Name": "Major Healing Potion", "Assistance type": "HP", "Benefit": 1, "Price": 90}
           }

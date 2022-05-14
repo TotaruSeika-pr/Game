@@ -13,6 +13,9 @@ class Player(Caravan):
         self.Outfit = data["Outfit"]
         self.Inventory = data["Inventory"]
         self.Money = data["Money"]
+
+    def PrintPlayer(self):
+        pass
     
     def PrintProfile(self):
         print('-----===== P R O F I L E =====-----')
@@ -24,8 +27,17 @@ class Player(Caravan):
         pass
 
     def PrintInventory(self):
+        print('-----===== I N V E N T O R Y =====-----')
+        index = 1
         for i in self.Inventory["Inventory"]:
-            print(i)
+            if i['Type'] == 'weapon':
+                print(f"{index}) {i['Name']} | Damage: {i['Dmg']} | {i['Rarity']}")
+            elif i['Type'] == 'potion':
+                print(f"{index}) {i['Name']} | {i['Benefit']*100}% {i['Assistance type']}")
+            index += 1
+
+        print(f"Items: {len(self.Inventory['Inventory'])}/{self.Inventory['Capacity']}")
+            
 
     def InventoryChecking(self):
         if len(self.Inventory["Inventory"]) < self.Inventory["Capacity"]:
@@ -55,3 +67,13 @@ class Player(Caravan):
 
     def FindDiamonds(self):
         self.Money["Diamonds"] += 1
+    
+    def LevelUp(self):
+        if self.Level['Exp'] >= self.Level['ExpMax']:
+            self.Level['Level'] += 1
+            self.Level['Exp'] -= self.Level['ExpMax']
+            self.Level['ExpMax'] = (self.Level['ExpMax']*1.5)//1
+            self.Inventory['Capacity'] += 1
+            self.HP['HPMax'] += 10
+            self.HP['HP'] = self.HP['HPMax']
+            self.Dmg += 3

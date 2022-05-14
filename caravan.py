@@ -1,6 +1,6 @@
 import random
 import entity
-
+import functions as func
 
 class Caravan:
 
@@ -20,7 +20,7 @@ class Caravan:
                     del self.caravan_weapons
                     break
                 elif event == 'sell':
-                    Caravan.Sale(self, player)
+                    Caravan.ItemSale(self, player)
                 else:
                     print('Is it something in a foreign language?')
             else:
@@ -28,7 +28,7 @@ class Caravan:
                     if int(event) < 6:
                         self.caravan_weapons[int(event)-1]
                     else:
-                        print(self.caravan_potions[int(event)-6])
+                        self.caravan_potions[int(event)-6]
                 except IndexError:
                     print('There is no product with this number!')
                 else:
@@ -47,9 +47,6 @@ class Caravan:
         
         self.caravan_weapons = []
 
-        
-
-        # rarity = ['Common', 'Unusual', 'Rare']
 
         for i in ['Common', 'Unusual', 'Rare']:
             while True:
@@ -60,43 +57,16 @@ class Caravan:
                         number_crafted_weapons[i] += 1
                     else:
                         break
-        
-        """while True:
-            if rarity_index > 2:
-                break
-            else:
-                weapon = entity.WEAPONS[random.randint(0, len(entity.WEAPONS)-1)]
-                try:
-                    int(weapon["Price"])
-                except TypeError:
-                    if weapon["Rarity"] == rarity[rarity_index]:
-                        if number_crafted_weapons[rarity[rarity_index]] < number_generated_weapons[rarity[rarity_index]]:
-                            self.caravan_weapons.append(weapon)
-                            number_crafted_weapons[rarity[rarity_index]] += 1
-                        else:
-                            rarity_index += 1
-                else:
-                    weapon = None
-        
-        weapon = None"""
 
-        print(self.caravan_weapons)
+        for i in range(len(self.caravan_weapons)-1):
+            coefficient = random.randint(-25, 25)
+            self.caravan_weapons[i]['Price'] += coefficient
 
-        caravan_weapons = list(self.caravan_weapons)
-        print(f'{id(caravan_weapons)} | {id(self.caravan_weapons)}')
-
-        for i in range(len(caravan_weapons)-1):
-            weapon_price = random.randint(caravan_weapons[i]["Price"][0], caravan_weapons[i]["Price"][1])
-            caravan_weapons[i]["Price"] = weapon_price
-            #self.caravan_weapons[i]["Price"] = random.randint(self.caravan_weapons[i]["Price"][0], self.caravan_weapons[i]["Price"][1])
-
-        self.caravan_potions = caravan_weapons
-            
-            
 
         self.caravan_potions = [entity.potions['1'], entity.potions['2'], entity.potions['3']]
         for i in range(3):
-            self.caravan_potions[i]["Price"] = random.randint(self.caravan_potions[i]["Price"][0], self.caravan_potions[i]["Price"][1])
+            coefficient = random.randint(-25, 25)
+            self.caravan_potions[i]["Price"] += coefficient
 
     def PrintAssortment(self):
         index = 1
@@ -104,9 +74,10 @@ class Caravan:
             print(f'{index}) {i["Name"]} | Dmg: {i["Dmg"]} | {i["Rarity"]} | Price: {i["Price"]} (c)')
             index += 1
 
-        print(f'6) {self.caravan_potions[0]["Name"]}: +{self.caravan_potions[0]["Benefit"]*100}% | {self.caravan_potions[0]["Price"]} (c)')
-        print(f'7) {self.caravan_potions[1]["Name"]}: +{self.caravan_potions[1]["Benefit"]*100}% | {self.caravan_potions[1]["Price"]} (c)')
-        print(f'8) {self.caravan_potions[2]["Name"]}: +{self.caravan_potions[2]["Benefit"]*100}% | {self.caravan_potions[2]["Price"]} (c)')
+        index = 6
+        for i in self.caravan_potions:
+            print(f"{index}) {i['Name']}: +{i['Benefit']*100}% {i['Assistance type']} | {i['Price']} (c)")
+            index += 1
 
     def BuyingItem(self, player, event):
         if player.InventoryChecking():
@@ -118,23 +89,30 @@ class Caravan:
                     else:
                         print('Insufficient funds!')
                 elif int(event):
-                    if player.Money["Coins"] >= self.caravan_potions[int(event)-1]["Price"]:
-                        player.Money["Coins"] -= self.caravan_potions[int(event)-1]["Price"]
+                    if player.Money["Coins"] >= self.caravan_potions[int(event)-6]["Price"]:
+                        player.Money["Coins"] -= self.caravan_potions[int(event)-6]["Price"]
                         player.Inventory["Inventory"].append(self.caravan_potions[int(event)-6])
+                        self.caravan_potions.pop(int(event)-6)
                     else:
                         print('Insufficient funds!')
 
 
-    def Sale(self, player):
+    def ItemSale(self, player):
         player.PrintInventory()
-        ans = int(input('\nWhat do you want to sell? '))
-        try:
-            player.Inventory["Inventory"][ans-1]
-        except IndexError:
-            print('Invalid number!')
+        ans = input('\nWhat do you want to sell? ')
+        if ans == 'back':
+            func.End()
         else:
-            # фикс
-            price = random.randint(player.Inventory["Inventory"][ans-1]["Price"][0], player.Inventory["Inventory"][ans-1]["Price"][1])//2
-            player.Money["Coins"] += price
-            player.Inventory["Inventory"].pop(ans-1)
-            print(f'\nYou sold {player.Inventory["Inventory"]["Name"]} for {price} (c)')
+            try:
+                ans = int(ans)-1
+                player.Inventory["Inventory"][ans]
+            except IndexError:
+                print('Invalid number!')
+            except ValueError:
+                print('Invalid command!')
+            else:
+                item = player.Inventory['Inventory'][ans]
+                price = player.Inventory['Inventory'][ans]['Price']//2
+                player.Money['Coins'] += price
+                player.Inventory['Inventory'].pop(ans)
+                print(f'\nYou sold {item["Name"]} for {price} (c)\n')

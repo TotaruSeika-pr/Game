@@ -22,3 +22,6 @@ def YesOrNoChecking(arg):
 
 def SyntaxError():
     print('Incorrect syntax!')
+
+def End():
+    pass
