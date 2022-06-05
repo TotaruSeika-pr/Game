@@ -26,6 +26,9 @@ def EventChecking(event, player, caravan):
 
     elif event == 'inventory':
         player.PrintInventory()
+
+    elif event == 'player':
+        player.PrintPlayer()
     
     else:
         func.SyntaxError()

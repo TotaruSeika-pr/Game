@@ -8,6 +8,7 @@ class Player(Caravan):
     def __init__(self, data):
         self.Name = data["Name"]
         self.HP = data["HP"]
+        self.Def = data["Def"]
         self.Dmg = data["Dmg"]
         self.Level = data["Level"]
         self.Outfit = data["Outfit"]
@@ -15,16 +16,16 @@ class Player(Caravan):
         self.Money = data["Money"]
 
     def PrintPlayer(self):
-        pass
+        Player.PrintProfile(self)
+        Player.PrintBalance(self)
+        Player.PrintInventory(self)
+
     
     def PrintProfile(self):
         print('-----===== P R O F I L E =====-----')
         print(f'  Name: {self.Name}')
         print(f'  HP: {self.HP["HP"]}/{self.HP["HPMax"]}')
         print(f'  Level: {self.Level["Level"]} | {self.Level["Exp"]}/{self.Level["ExpMax"]}')
-
-    def PrintStats(self):
-        pass
 
     def PrintInventory(self):
         print('-----===== I N V E N T O R Y =====-----')
@@ -77,3 +78,4 @@ class Player(Caravan):
             self.HP['HPMax'] += 10
             self.HP['HP'] = self.HP['HPMax']
             self.Dmg += 3
+            self.Def += 2

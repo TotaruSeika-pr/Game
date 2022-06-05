@@ -27,6 +27,7 @@ def SaveData(player):
     data = {
         "Name": player.Name,
         "HP": player.HP,
+        "Def": player.Def,
         "Dmg": player.Dmg,
         "Level": player.Level,
         "Outfit": player.Outfit,
@@ -45,6 +46,7 @@ def CreatePlayer():
         data = {
             "Name": name,
             "HP": {"HP": 25, "HPMax": 25},
+            "Def": 0,
             "Dmg": 2,
             "Level": {"Exp": 0, "ExpMax": 10, "Level": 1},
             "Outfit": {"Weapon": None, "Head": None, "Torso": None, "Legs": None},

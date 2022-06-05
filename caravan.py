@@ -37,7 +37,13 @@ class Caravan:
 
     def ItemGeneration(self):
 
+        regular_offer = random.choice('weapon', 'head', 'torso', 'legs')
+        special_offer = random.choice('weapon', 'head', 'torso', 'legs')
+        
         number_generated_weapons = {'Common': 0, 'Unusual': 0, 'Rare': 0}
+
+        type_item = random.choice(['Weapon', 'Head', 'Torso', 'Legs'])
+        rare_item_type = random.choice(['Weapon', 'Head', 'Torso', 'Legs'])
 
         number_generated_weapons['Common'] = random.randint(1, 4)
         number_generated_weapons['Unusual'] = random.randint(1, (5-number_generated_weapons['Common']))
