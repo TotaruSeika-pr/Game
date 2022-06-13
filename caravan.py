@@ -17,7 +17,6 @@ class Caravan:
                 int(event)
             except ValueError:
                 if event == 'leave':
-                    del self.caravan_weapons
                     break
                 elif event == 'sell':
                     Caravan.ItemSale(self, player)
@@ -26,7 +25,7 @@ class Caravan:
             else:
                 try:
                     if int(event) < 6:
-                        self.caravan_weapons[int(event)-1]
+                        self.caravan_items[int(event)-1]
                     else:
                         self.caravan_potions[int(event)-6]
                 except IndexError:
@@ -36,37 +35,46 @@ class Caravan:
                     
 
     def ItemGeneration(self):
-
-        regular_offer = random.choice('weapon', 'head', 'torso', 'legs')
-        special_offer = random.choice('weapon', 'head', 'torso', 'legs')
         
-        number_generated_weapons = {'Common': 0, 'Unusual': 0, 'Rare': 0}
+        number_generated_items = {'Common': 0, 'Unusual': 0, 'Rare': 0}
 
-        type_item = random.choice(['Weapon', 'Head', 'Torso', 'Legs'])
-        rare_item_type = random.choice(['Weapon', 'Head', 'Torso', 'Legs'])
-
-        number_generated_weapons['Common'] = random.randint(1, 4)
-        number_generated_weapons['Unusual'] = random.randint(1, (5-number_generated_weapons['Common']))
-        number_generated_weapons['Rare'] = random.randint(0, 5-(number_generated_weapons['Common']+number_generated_weapons['Unusual']))
-
-        number_crafted_weapons = {'Common': 0, 'Unusual': 0, 'Rare': 0}
+        types = ['Weapons', 'Heads', 'Torsos', 'Legs']
         
-        self.caravan_weapons = []
+        item_type = random.choice(types)
+        rare_item_type = random.choice(types)
+
+        number_generated_items['Common'] = random.randint(1, 4)
+        number_generated_items['Unusual'] = random.randint(1, (5-number_generated_items['Common']))
+        number_generated_items['Rare'] = random.randint(0, 5-(number_generated_items['Common']+number_generated_items['Unusual']))
+
+        number_crafted_items = {'Common': 0, 'Unusual': 0, 'Rare': 0}
+        
+        self.caravan_items = []
+        self.caravan_special_offer = []
 
 
         for i in ['Common', 'Unusual', 'Rare']:
             while True:
-                weapon = random.choice(entity.WEAPONS)
-                if weapon['Rarity'] == i:
-                    if number_crafted_weapons[i] < number_generated_weapons[i]:
-                        self.caravan_weapons.append(weapon)
-                        number_crafted_weapons[i] += 1
+                item = random.choice(entity.WEARABLE_ITEMS[item_type])
+                if item['Rarity'] == i:
+                    if number_crafted_items[i] < number_generated_items[i]:
+                        self.caravan_items.append(item)
+                        number_crafted_items[i] += 1
                     else:
                         break
+        
+        while True:
+            rare_item = random.choice(entity.WEARABLE_ITEMS[rare_item_type])
+            if rare_item['Rarity'] == 'Unusual' or rare_item['Rarity'] == 'Rare':
+                rare_item['Price'] += random.randint(-10, 30)
+                rare_item['Price'] *= 2
+                self.caravan_special_offer = rare_item
+                break
 
-        for i in range(len(self.caravan_weapons)-1):
+        for i in range(len(self.caravan_items)-1):
             coefficient = random.randint(-25, 25)
-            self.caravan_weapons[i]['Price'] += coefficient
+            self.caravan_items[i]['Price'] += coefficient 
+            del coefficient
 
 
         self.caravan_potions = [entity.potions['1'], entity.potions['2'], entity.potions['3']]
@@ -76,8 +84,13 @@ class Caravan:
 
     def PrintAssortment(self):
         index = 1
-        for i in self.caravan_weapons:
-            print(f'{index}) {i["Name"]} | Dmg: {i["Dmg"]} | {i["Rarity"]} | Price: {i["Price"]} (c)')
+        for i in self.caravan_items:
+            try:
+                i['Def']
+            except KeyError:
+                print(f'{index}) {i["Name"]} | Dmg: {i["Dmg"]} | {i["Rarity"]} | {i["Price"]} (c)')
+            else:
+                print(f'{index}) {i["Name"]} | Def: {i["Def"]} | {i["Rarity"]} | {i["Price"]} (c)')
             index += 1
 
         index = 6
@@ -85,22 +98,37 @@ class Caravan:
             print(f"{index}) {i['Name']}: +{i['Benefit']*100}% {i['Assistance type']} | {i['Price']} (c)")
             index += 1
 
+        if self.caravan_special_offer != None:
+            i = self.caravan_special_offer
+            print('\tSpecial offer!!!')
+            try:
+                self.caravan_special_offer['Def']
+            except KeyError:
+                print(f'0) {i["Name"]} | Dmg: {i["Dmg"]} | {i["Rarity"]} | {i["Price"]} (c)')
+            else:
+                print(f'0) {i["Name"]} | Def: {i["Def"]} | {i["Rarity"]} | {i["Price"]} (c)')
+
     def BuyingItem(self, player, event):
         if player.InventoryChecking():
-                if int(event) < 6:
-                    if player.Money["Coins"] >= self.caravan_weapons[int(event)-1]["Price"]:
-                        player.Money["Coins"] -= self.caravan_weapons[int(event)-1]["Price"]
-                        player.Inventory["Inventory"].append(self.caravan_weapons[int(event)-1])
-                        self.caravan_weapons.pop(int(event)-1)
+                if int(event) < 6 and int(event) > 0:
+                    if player.Money["Coins"] >= self.caravan_items[int(event)-1]["Price"]:
+                        player.Money["Coins"] -= self.caravan_items[int(event)-1]["Price"]
+                        player.Inventory["Inventory"].append(self.caravan_items[int(event)-1])
+                        self.caravan_items.pop(int(event)-1)
                     else:
                         print('Insufficient funds!')
-                elif int(event):
+                elif int(event) > 5:
                     if player.Money["Coins"] >= self.caravan_potions[int(event)-6]["Price"]:
                         player.Money["Coins"] -= self.caravan_potions[int(event)-6]["Price"]
                         player.Inventory["Inventory"].append(self.caravan_potions[int(event)-6])
                         self.caravan_potions.pop(int(event)-6)
                     else:
                         print('Insufficient funds!')
+                elif int(event) == 0:
+                    if player.Money["Coins"] >= self.caravan_special_offer["Price"]:
+                        player.Money["Coins"] -= self.caravan_special_offer["Price"]
+                        player.Inventory["Inventory"].append(self.caravan_special_offer)
+                        self.caravan_special_offer = None
 
 
     def ItemSale(self, player):

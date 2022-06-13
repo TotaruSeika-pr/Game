@@ -31,11 +31,17 @@ class Player(Caravan):
         print('-----===== I N V E N T O R Y =====-----')
         index = 1
         for i in self.Inventory["Inventory"]:
-            if i['Type'] == 'weapon':
-                print(f"{index}) {i['Name']} | Damage: {i['Dmg']} | {i['Rarity']}")
-            elif i['Type'] == 'potion':
-                print(f"{index}) {i['Name']} | {i['Benefit']*100}% {i['Assistance type']}")
-            index += 1
+            try:
+                i['Def']
+            except KeyError:
+                if i['Type'] == 'weapon':
+                    print(f"{index}) {i['Name']} | Damage: {i['Dmg']} | {i['Rarity']}")
+                elif i['Type'] == 'potion':
+                    print(f"{index}) {i['Name']} | {i['Benefit']*100}% {i['Assistance type']}")
+                index += 1
+            else:
+                print(f"{index}) {i['Name']} | Def: {i['Def']} | {i['Rarity']}")
+                index += 1
 
         print(f"Items: {len(self.Inventory['Inventory'])}/{self.Inventory['Capacity']}")
             

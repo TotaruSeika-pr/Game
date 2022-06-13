@@ -5,7 +5,6 @@ import data_manager as dm
 import controls
 import functions
 
-
 def main():
     if functions.GameInitialization():
         print('\t\tWelcome!')
