@@ -27,8 +27,17 @@ def EventChecking(event, player, caravan):
     elif event == 'inventory':
         player.PrintInventory()
 
+    elif event == 'outfit':
+        player.PrintOutfit()
+
     elif event == 'player':
         player.PrintPlayer()
+    
+    elif event == 'act':
+        if len(player.Inventory['Inventory']) == 0:
+            print('You have an empty inventory. Nothing to use :(\n')
+        else:
+            player.ActItem()
     
     else:
         func.SyntaxError()

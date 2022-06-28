@@ -1,28 +1,28 @@
 
-locations = {
-            "Forest": {"id": 0, "Complexity": ["Easily", 1]},
-            "Desert": {"id": 1, "Complexity": ["Medium", 2]},
-            "Volcano": {"id": 2, "Complexity": ["Difficult", 3]}
+LOCATIONS = {
+            "1": {"Name": "Forest", "id": 0, "Complexity": ["Easily", 1]},
+            "2": {"Name": "Desert", "id": 1, "Complexity": ["Medium", 2]},
+            "3": {"Name": "FoVolcanorest", "id": 2, "Complexity": ["Difficult", 3]}
             }
 
-enemies = {
-            "Stone": {"HP": [10, 25], "Dmg": [0, 1], "Spawn": [0, 1, 2]},
-            "Wolf": {"HP": [8, 12], "Dmg": [1, 3], "Spawn": [0, 1]},
-            "Rogue": {"HP": [12, 18], "Dmg": [3, 5], "Spawn": [0, 1]},
-            "Big stone worm": {"HP": [20, 32], "Dmg": [2, 5], "Spawn": [0, 2]},
-            "Lava monster": {"HP": [15, 25], "Dmg": [4, 8], "Spawn": [2]}
+ENEMIES = {
+            "1": {"Name": "Stone", "HP": [10, 25], "Dmg": [0, 2], "Spawn": [0, 1, 2]},
+            "2": {"Name": "Wolf", "HP": [8, 12], "Dmg": [1, 3], "Spawn": [0, 1]},
+            "3": {"Name": "Rogue", "HP": [12, 18], "Dmg": [3, 5], "Spawn": [0, 1]},
+            "4": {"Name": "Big stone worm", "HP": [20, 32], "Dmg": [2, 5], "Spawn": [0, 2]},
+            "5r": {"Name": "Lava monster", "HP": [15, 25], "Dmg": [4, 8], "Spawn": [2]}
           }
 
 WEARABLE_ITEMS = {
   
   'Weapons':
-            [{"Type": "weapon", "Name": "Stick", "Dmg": 2, "Rarity": "Common", "Price": 35},
-             {"Type": "weapon", "Name": "Rusty knife", "Dmg": 4, "Rarity": "Common", "Price": 40},
-             {"Type": "weapon", "Name": "Wooden spear", "Dmg": 5, "Rarity": "Common", "Price": 50},
-             {"Type": "weapon", "Name": "Dagger", "Dmg": 7, "Rarity": "Unusual", "Price": 65},
-             {"Type": "weapon", "Name": "Iron sword", "Dmg": 10, "Rarity": "Unusual", "Price": 70},
-             {"Type": "weapon", "Name": "Katana", "Dmg": 13, "Rarity": "Rare", "Price": 80},
-             {"Type": "weapon", "Name": "Battle Ax", "Dmg": 17, "Rarity": "Rare", "Price": 90}],
+            [{"Type": "Weapon", "Name": "Stick", "Dmg": 2, "Rarity": "Common", "Price": 35},
+             {"Type": "Weapon", "Name": "Rusty knife", "Dmg": 4, "Rarity": "Common", "Price": 40},
+             {"Type": "Weapon", "Name": "Wooden spear", "Dmg": 5, "Rarity": "Common", "Price": 50},
+             {"Type": "Weapon", "Name": "Dagger", "Dmg": 7, "Rarity": "Unusual", "Price": 65},
+             {"Type": "Weapon", "Name": "Iron sword", "Dmg": 10, "Rarity": "Unusual", "Price": 70},
+             {"Type": "Weapon", "Name": "Katana", "Dmg": 13, "Rarity": "Rare", "Price": 80},
+             {"Type": "Weapon", "Name": "Battle Ax", "Dmg": 17, "Rarity": "Rare", "Price": 90}],
   'Heads':
             [{'Type': 'Head', 'Name': 'Russian scarf', 'Def': 1, 'Rarity': 'Common', 'Price': 15},
              {'Type': 'Head', 'Name': 'Asian hat', 'Def': 2, 'Rarity': 'Common', 'Price': 20},

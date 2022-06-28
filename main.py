@@ -11,7 +11,6 @@ def main():
         dm.SelectFile()
         player = Player(dm.data)
         caravan = Caravan()
-        player.Money["Coins"] += 100 # убрать
         print(f'\nHello, {player.Name}. Have a good hunting!')
         try:
             while True:

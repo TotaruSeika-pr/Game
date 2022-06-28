@@ -1,4 +1,6 @@
 import random
+from copy import deepcopy
+from typing import Type
 import controls
 import functions as func
 from caravan import Caravan
@@ -14,12 +16,13 @@ class Player(Caravan):
         self.Outfit = data["Outfit"]
         self.Inventory = data["Inventory"]
         self.Money = data["Money"]
+        self.Statistics = data["Statistics"]
 
     def PrintPlayer(self):
         Player.PrintProfile(self)
         Player.PrintBalance(self)
         Player.PrintInventory(self)
-
+        Player.PrintOutfit(self)
     
     def PrintProfile(self):
         print('-----===== P R O F I L E =====-----')
@@ -34,7 +37,7 @@ class Player(Caravan):
             try:
                 i['Def']
             except KeyError:
-                if i['Type'] == 'weapon':
+                if i['Type'] == 'Weapon':
                     print(f"{index}) {i['Name']} | Damage: {i['Dmg']} | {i['Rarity']}")
                 elif i['Type'] == 'potion':
                     print(f"{index}) {i['Name']} | {i['Benefit']*100}% {i['Assistance type']}")
@@ -58,6 +61,24 @@ class Player(Caravan):
         print(f'  Coins: {self.Money["Coins"]}')
         print(f'  Diamonds: {self.Money["Diamonds"]}')
 
+    def PrintOutfit(self):
+        print('-----===== O U T F I T =====-----')
+        dmg_outfit = 0
+        def_outfit = 0
+        if self.Outfit['Weapon'] != None:
+            print(f"Weapon: {self.Outfit['Weapon']['Name']} | Dmg: {self.Outfit['Weapon']['Dmg']}")
+            dmg_outfit += self.Outfit['Weapon']['Dmg']
+        if self.Outfit['Head'] != None:
+            print(f"Head: {self.Outfit['Head']['Name']} | Def: {self.Outfit['Head']['Def']}")
+            def_outfit += self.Outfit['Head']['Def']
+        if self.Outfit['Torso'] != None:
+            print(f"Torso: {self.Outfit['Torso']['Name']} | Def: {self.Outfit['Torso']['Def']}")
+            def_outfit += self.Outfit['Torso']['Def']
+        if self.Outfit['Legs'] != None:
+            print(f"Legs: {self.Outfit['Legs']['Name']} | Def: {self.Outfit['Legs']['Def']}")
+            def_outfit += self.Outfit['Legs']['Def']
+        print(f'Dmg: {self.Dmg+dmg_outfit}={self.Dmg}+{dmg_outfit} | Def: {self.Def+def_outfit}={self.Def}+{def_outfit}')
+    
     def Walking(self, player):
         a = random.randint(0, 100)
         if a >= 0 and a <= 49:
@@ -68,12 +89,80 @@ class Player(Caravan):
             print('You met a caravan!')
             if func.YesOrNoChecking(input('Would you like to see the products of the caravan? (y/n) ')):
                 Caravan.FindCaravan(self, player)
-        elif a >= 95 and a <= 100:
+        elif a >= 95 and a <= 98:
+            print('You have moved to a new location!')
+        elif a >= 99 and a <= 100:
             print('You found diamonds!')
             Player.FindDiamonds(player)
 
     def FindDiamonds(self):
         self.Money["Diamonds"] += 1
+
+    def PutItem(self, type, index):
+        if self.Outfit[f'{type}'] == None:
+                self.Outfit[f'{type}'] = deepcopy(self.Inventory['Inventory'][int(index)-1])
+                self.Inventory['Inventory'].pop(int(index)-1)
+
+        else:
+            a = deepcopy(self.Outfit[f'{type}'])
+            self.Outfit[f'{type}'] = self.Inventory['Inventory'][int(index)-1]
+            self.Inventory['Inventory'][int(index)-1] = deepcopy(a)
+
+    def RemoveItem(self, type):
+        self.Inventory['Inventory'].append(deepcopy(self.Outfit[f'{type}']))
+        self.Outfit[f'{type}'] = None
+
+    def ActItem(self):
+        Player.PrintInventory(self)
+        event = input('What do you want to do?\n(put [num], throw [num], remove [type]) ')
+        if event[:3] == 'put':
+            index = event[4:]
+            try:
+                self.Inventory['Inventory'][int(index)-1]
+            except TypeError:
+                print('It must be a number!')
+            except IndexError:
+                print("You don't have that item in your inventory!")
+            else:
+                if self.Inventory['Inventory'][int(index)-1]['Type'] == 'potion':
+                    if self.Inventory['Inventory'][int(index)-1]['Assistance type'] == 'HP':
+                        self.HP['HP'] += round(self.Inventory['Inventory'][int(index)-1]['Benefit'] * self.HP['HPMax'])
+                        if self.HP['HP'] > self.HP['HPMax']:
+                            self.HP['HP'] = self.HP['HPMax']
+                        self.Inventory['Inventory'].pop(int(index)-1)
+                        print('You feel so much better!')
+
+                elif self.Inventory['Inventory'][int(index)-1]['Type'] == 'Weapon':
+                    Player.PutItem(self, 'Weapon', index)
+                
+                elif self.Inventory['Inventory'][int(index)-1]['Type'] == 'Head':
+                    Player.PutItem(self, 'Head', index)
+                
+                elif self.Inventory['Inventory'][int(index)-1]['Type'] == 'Torso':
+                    Player.PutItem(self, 'Torso', index)
+
+                elif self.Inventory['Inventory'][int(index)-1]['Type'] == 'Legs':
+                    Player.PutItem(self, 'Legs', index)
+            
+        elif event[:5] == 'throw':
+            index = event[6:]
+            try:
+                self.Inventory['Inventory'][int(index)-1]
+            except TypeError:
+                print('It must be a number!')
+            except IndexError:
+                print("You don't have that item in your inventory!")
+            else:
+                if func.YesOrNoChecking(input(f"Are you sure you want to drop the {self.Inventory['Inventory'][int(index)-1]['Name']}? (y/n) ")):
+                    self.Inventory['Inventory'].pop(int(index)-1)
+                else:
+                    pass
+
+        elif event[:6] == 'remove':
+            if Player.InventoryChecking(self):
+                item_type = event[7:]
+                Player.RemoveItem(self, item_type)
+
     
     def LevelUp(self):
         if self.Level['Exp'] >= self.Level['ExpMax']:

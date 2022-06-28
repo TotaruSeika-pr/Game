@@ -1,4 +1,6 @@
 import random
+from copy import deepcopy
+import time
 import entity
 import functions as func
 
@@ -52,10 +54,9 @@ class Caravan:
         self.caravan_items = []
         self.caravan_special_offer = []
 
-
         for i in ['Common', 'Unusual', 'Rare']:
             while True:
-                item = random.choice(entity.WEARABLE_ITEMS[item_type])
+                item = deepcopy(random.choice(entity.WEARABLE_ITEMS[item_type]))
                 if item['Rarity'] == i:
                     if number_crafted_items[i] < number_generated_items[i]:
                         self.caravan_items.append(item)
@@ -64,7 +65,7 @@ class Caravan:
                         break
         
         while True:
-            rare_item = random.choice(entity.WEARABLE_ITEMS[rare_item_type])
+            rare_item = deepcopy(random.choice(entity.WEARABLE_ITEMS[rare_item_type]))
             if rare_item['Rarity'] == 'Unusual' or rare_item['Rarity'] == 'Rare':
                 rare_item['Price'] += random.randint(-10, 30)
                 rare_item['Price'] *= 2
@@ -73,8 +74,7 @@ class Caravan:
 
         for i in range(len(self.caravan_items)-1):
             coefficient = random.randint(-25, 25)
-            self.caravan_items[i]['Price'] += coefficient 
-            del coefficient
+            self.caravan_items[i]['Price'] += coefficient
 
 
         self.caravan_potions = [entity.potions['1'], entity.potions['2'], entity.potions['3']]
