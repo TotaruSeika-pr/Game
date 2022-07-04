@@ -23,6 +23,7 @@ def EventChecking(event, player, caravan):
 
     elif event == 'walk':
         player.Walking(player)
+        player.Statistics['Steps'] += 1
 
     elif event == 'inventory':
         player.PrintInventory()

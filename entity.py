@@ -1,16 +1,18 @@
+VERSION = '1.0.0.0'
 
-LOCATIONS = {
-            "1": {"Name": "Forest", "id": 0, "Complexity": ["Easily", 1]},
-            "2": {"Name": "Desert", "id": 1, "Complexity": ["Medium", 2]},
-            "3": {"Name": "FoVolcanorest", "id": 2, "Complexity": ["Difficult", 3]}
-            }
+
+LOCATIONS = [
+              {"Name": "Forest", "id": 0, "Complexity": ["Easily", 0]},
+              {"Name": "Desert", "id": 1, "Complexity": ["Medium", 1]},
+              {"Name": "Volcano", "id": 2, "Complexity": ["Difficult", 2]}
+            ]
 
 ENEMIES = {
             "1": {"Name": "Stone", "HP": [10, 25], "Dmg": [0, 2], "Spawn": [0, 1, 2]},
             "2": {"Name": "Wolf", "HP": [8, 12], "Dmg": [1, 3], "Spawn": [0, 1]},
             "3": {"Name": "Rogue", "HP": [12, 18], "Dmg": [3, 5], "Spawn": [0, 1]},
             "4": {"Name": "Big stone worm", "HP": [20, 32], "Dmg": [2, 5], "Spawn": [0, 2]},
-            "5r": {"Name": "Lava monster", "HP": [15, 25], "Dmg": [4, 8], "Spawn": [2]}
+            "5": {"Name": "Lava monster", "HP": [15, 25], "Dmg": [4, 8], "Spawn": [2]}
           }
 
 WEARABLE_ITEMS = {

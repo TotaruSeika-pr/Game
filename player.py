@@ -1,9 +1,11 @@
+from cmath import e
 import random
 from copy import deepcopy
 from typing import Type
 import controls
 import functions as func
 from caravan import Caravan
+import entity
 
 class Player(Caravan):
     
@@ -15,6 +17,7 @@ class Player(Caravan):
         self.Level = data["Level"]
         self.Outfit = data["Outfit"]
         self.Inventory = data["Inventory"]
+        self.Position = data["Position"]
         self.Money = data["Money"]
         self.Statistics = data["Statistics"]
 
@@ -90,7 +93,21 @@ class Player(Caravan):
             if func.YesOrNoChecking(input('Would you like to see the products of the caravan? (y/n) ')):
                 Caravan.FindCaravan(self, player)
         elif a >= 95 and a <= 98:
-            print('You have moved to a new location!')
+            print('You have found new territory!')
+            b = self.Level['Level']//10
+            print(b)
+            while True:
+                location = deepcopy(random.choice(entity.LOCATIONS))
+                if location['Complexity'][1] <= b and location['id'] != self.Position['Location_id']:
+                    if func.YesOrNoChecking(input(f'Do you want to move to the {location["Name"]}? (y/n) ')):
+                        self.Position['Location_id'] = deepcopy(location['id'])
+                        break
+                    else:
+                        break
+                else:
+                    print('There is no way to move to a new location.')
+                    break
+
         elif a >= 99 and a <= 100:
             print('You found diamonds!')
             Player.FindDiamonds(player)

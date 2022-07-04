@@ -1,13 +1,13 @@
-from cgi import test
 from player import Player
 from caravan import Caravan
 import data_manager as dm
 import controls
 import functions
+import entity
 
 def main():
     if functions.GameInitialization():
-        print('\t\tWelcome!')
+        print(f'\t\tWelcome! {entity.VERSION}')
         dm.SelectFile()
         player = Player(dm.data)
         caravan = Caravan()

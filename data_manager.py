@@ -42,6 +42,7 @@ def SaveData(player):
         "Level": player.Level,
         "Outfit": player.Outfit,
         "Inventory": player.Inventory,
+        "Position": player.Position,
         "Money": player.Money,
         "Statistics": player.Statistics
     }
@@ -62,6 +63,7 @@ def CreatePlayer():
             "Level": {"Exp": 0, "ExpMax": 10, "Level": 1},
             "Outfit": {"Weapon": None, "Head": None, "Torso": None, "Legs": None},
             "Inventory": {"Inventory": [], "Capacity":  5},
+            "Position": {"Location_id": 0},
             "Money": {"Coins": 0, "Diamonds": 0},
             "Statistics": {"Steps": 0}
         }
